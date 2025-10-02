@@ -3,6 +3,9 @@ import pandas as pd
 import os
 import glob
 
+from utils_log import log_decorator
+
+@log_decorator
 def extrair_dados(pasta: str) -> pd.DataFrame:
     """Espera o path de uma pasta para extrair e consolidar os arquivos json"""
     arq_json = glob.glob(os.path.join(pasta, '*.json')) 
@@ -17,9 +20,10 @@ def extrair_dados(pasta: str) -> pd.DataFrame:
     # recebe essa lista, identifica o cabeçalho e unifica o dataframe
     return df_total
 
+
 # TRANSFORMAR OS ARQUIVOS
 # INCLUIR UMA COLUNA DE CALCULO DA VENDA POR QUANTIDADE
-
+@log_decorator
 def transformacao(df: pd.DataFrame) -> pd.DataFrame:
     """Cria uma coluna TOTAL que é a multiplicaçao de <Quantidade> e <Venda>"""
     df["Total"] = df["Quantidade"] * df["Venda"]
@@ -27,7 +31,7 @@ def transformacao(df: pd.DataFrame) -> pd.DataFrame:
 
 
 # LOAD DOS ARQUIVOS EM CSV OU PARQUET
-
+@log_decorator
 def carregar_dados(df: pd.DataFrame, formato: list):
     """Salva no formato "csv", "parquet" ou "ambos" """
     for f in formato:
@@ -36,7 +40,9 @@ def carregar_dados(df: pd.DataFrame, formato: list):
         if f  == "parquet":
             df.to_parquet("tratados/dados.parquet", index=False)    
 
+
 # FUNÇAO CONSOLIDANDO TODAS AS AÇOES
+@log_decorator
 def pipeline_KPI_vendas(pasta: str, formato: list):
     data_frame: pd.DataFrame = transformacao(extrair_dados(pasta))
     carregar_dados(data_frame, formato)

@@ -1,6 +1,9 @@
 # Pastas
 tratados/
 
+# LOGS
+*.log
+
 # Python
 __pycache__/
 *.pyc

@@ -12,13 +12,13 @@ logger.add(
 )
 
 logger.add(
-    "meu_arquivo_de_logs.log",  # Arquivo onde os logs serão salvos
+    "logs/log_decorator.log",  # Arquivo onde os logs serão salvos
     format="{time} {level} {message} {file}",
     level="INFO"
 )
 
 logger.add(
-    "meu_arquivo_de_logs.log",
+    "logs/log_decorator.log",
     format="{time} {level} {message} {file}",
     level="ERROR"
 )
@@ -31,6 +31,7 @@ logger.error("Este é um log de erro.")
 def log_decorator(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
+    # *args e **kwargs recebe as variaveis informadas pelo usuario para posteriormente usa-las na funçao a ser "loggada"
         logger.info(f"Chamando função '{func.__name__}' com args {args} e kwargs {kwargs}")
         try:
             result = func(*args, **kwargs)
